@@ -2,6 +2,9 @@
     <head>
         <style>
             body {font-family: arial; margin: 20px;}
+            .bullish {background : green; color: white;}
+            .bearish{background: red; color: white;}
+            td {padding: 10px}
         </style>
     </head>
     <body>
@@ -14,13 +17,41 @@
         <form>
             <select name = "pattern">
                 {% for pattern in patterns %}
-                <option value = "{{pattern}}">{{patterns[pattern]}}</option>
+                <option value = "{{pattern}}" {% if pattern == current_pattern %}selected = "selected"{% endif %}>{{patterns[pattern]}}</option>
                 {% endfor %}
             </select>
             <input type = "submit" value = "scan" />
         </form>
 
-        
+        <table>
+            <tr>
+                <th>
+                    Ticker
+                </th>
+                <th>
+                    Company Name
+                </th>
+                <th>
+                    Signal
+                </th>
+            </tr>
+            {% for stock in stocks %}
+                {% if stocks[stock][current_pattern] %}
+                <tr>
+                    <td>  {{ stock }} </td>
+                    <td>{{ stocks[stock]['company'] }} </td>
+                    <td class = "{{stocks[stock][current_pattern]}}"> {{stocks[stock][current_pattern]}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                         <img src= "https://finviz.com/chart.ashx?t={{ stock }}&ty=c&ta=1&p=d&s=l" />
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+
+        </table>
+      
 
     </body>
 </html>
